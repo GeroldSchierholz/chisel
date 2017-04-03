@@ -117,6 +117,8 @@ func (c *Client) Start() {
 func (c *Client) start() {
 	c.Infof("Connecting to %s\n", c.server)
 
+	header := http.Header{}
+	header.Add("Origin", "https://localhost/")
 
 	websocket.DefaultDialer.Subprotocols = []string{chshare.ProtocolVersion}
 
