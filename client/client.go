@@ -120,8 +120,6 @@ func (c *Client) start() {
 	header := http.Header{}
 	header.Add("Origin", "https://localhost/")
 
-	websocket.DefaultDialer.Subprotocols = []string{chshare.ProtocolVersion}
-
 	//prepare proxies
 	for id, r := range c.config.shared.Remotes {
 		proxy := NewProxy(c, id, r)
