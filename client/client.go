@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cicavey/chisel/share"
+	"github.com/GeroldSchierholz/chisel/share"
 	"github.com/gorilla/websocket"
 	"github.com/jpillora/backoff"
 	"golang.org/x/crypto/ssh"
