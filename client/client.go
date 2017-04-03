@@ -149,7 +149,7 @@ func (c *Client) start() {
 			time.Sleep(d)
 		}
 
-		ws, resp, err := websocket.DefaultDialer.Dial(c.server)
+		ws, resp, err := websocket.DefaultDialer.Dial(c.server,nil)
 
 		if err != nil {
 			fmt.Println(err, resp)
