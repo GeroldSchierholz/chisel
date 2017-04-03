@@ -167,12 +167,9 @@ var clientHelp = `
 
 	Options:
 
-	  --cert, User cert for Websocket client SSL (pem)
-	  --key, User key for Websocket client SSL (pem, no passphrase)
-
 	  --fingerprint, An optional fingerprint (server authentication)
 	  string to compare against the server's public key. You may provide
-	  just a prefix of the key or the entire string. Fingerprint 
+	  just a prefix of the key or the entire string. Fingerprint
 	  mismatches will close the connection.
 
 	  --auth, An optional username and password (client authentication)
@@ -194,8 +191,6 @@ func client(args []string) {
 	auth := flags.String("auth", "", "")
 	keepalive := flags.Duration("keepalive", 0, "")
 	verbose := flags.Bool("v", false, "")
-	cert := flags.String("cert", "", "")
-	key := flags.String("key", "", "")
 
 	flags.Usage = func() {
 		fmt.Fprintf(os.Stderr, clientHelp)
@@ -209,8 +204,6 @@ func client(args []string) {
 	}
 
 	c, err := chclient.NewClient(&chclient.Config{
-		Cert:        *cert,
-		Key:         *key,
 		Fingerprint: *fingerprint,
 		Auth:        *auth,
 		KeepAlive:   *keepalive,

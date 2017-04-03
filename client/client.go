@@ -1,7 +1,6 @@
 package chclient
 
 import (
-	"crypto/tls"
 	"fmt"
 	"io"
 	"net"
@@ -19,8 +18,6 @@ import (
 
 type Config struct {
 	shared      *chshare.Config
-	Cert        string
-	Key         string
 	Fingerprint string
 	Auth        string
 	KeepAlive   time.Duration
@@ -31,7 +28,6 @@ type Config struct {
 type Client struct {
 	*chshare.Logger
 	config    *Config
-	tlsConfig *tls.Config
 	sshConfig *ssh.ClientConfig
 	proxies   []*Proxy
 	sshConn   ssh.Conn
@@ -74,17 +70,11 @@ func NewClient(config *Config) (*Client, error) {
 	}
 	config.shared = shared
 
-	// load TLS config
-	cert, err := tls.LoadX509KeyPair(config.Cert, config.Key)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to load client keys: %s", err)
-	}
-	tlsConfig := &tls.Config{Certificates: []tls.Certificate{cert}, InsecureSkipVerify: true}
+
 
 	client := &Client{
 		Logger:    chshare.NewLogger("client"),
 		config:    config,
-		tlsConfig: tlsConfig,
 		server:    u.String(),
 		running:   true,
 		runningc:  make(chan error, 1),
@@ -127,10 +117,7 @@ func (c *Client) Start() {
 func (c *Client) start() {
 	c.Infof("Connecting to %s\n", c.server)
 
-	header := http.Header{}
-	header.Add("Origin", "https://localhost/")
 
-	websocket.DefaultDialer.TLSClientConfig = c.tlsConfig
 	websocket.DefaultDialer.Subprotocols = []string{chshare.ProtocolVersion}
 
 	//prepare proxies
