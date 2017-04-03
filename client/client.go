@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net"
-	"net/http"
 	"net/url"
 	"regexp"
 	"strings"
@@ -117,9 +116,6 @@ func (c *Client) Start() {
 func (c *Client) start() {
 	c.Infof("Connecting to %s\n", c.server)
 
-	header := http.Header{}
-	header.Add("Origin", "https://localhost/")
-
 	//prepare proxies
 	for id, r := range c.config.shared.Remotes {
 		proxy := NewProxy(c, id, r)
@@ -153,7 +149,7 @@ func (c *Client) start() {
 			time.Sleep(d)
 		}
 
-		ws, resp, err := websocket.DefaultDialer.Dial(c.server, header)
+		ws, resp, err := websocket.DefaultDialer.Dial(c.server)
 
 		if err != nil {
 			fmt.Println(err, resp)

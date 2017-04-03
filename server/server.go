@@ -39,9 +39,6 @@ func NewServer(config *Config) (*Server, error) {
 	s := &Server{
 		Logger: chshare.NewLogger("server"),
 		wsUpgrader: websocket.Upgrader{
-			CheckOrigin: func(req *http.Request) bool {
-				return true
-			},
 		},
 		httpServer: chshare.NewHTTPServer(),
 		sessions:   map[string]*chshare.User{},
